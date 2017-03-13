@@ -54,7 +54,12 @@ if (Meteor.isClient) {
       if(!Meteor.user()){
         alert("You need to log-in!");
       } else {
-        Meteor.call("addDoc");
+      Meteor.call("addDoc", function(err, res){
+          if(!err){
+            console.log("Doc created with id " + res);
+            Session.set("docid", res);
+          }
+        });
       }
     }
   });
@@ -84,7 +89,7 @@ if (Meteor.isServer) {
         title:"My new doc"
       }
 
-      Documents.insert(doc);
+      return Documents.insert(doc);
     },
     addEditingUser:function(){
       var doc, doc_id, user, user_id, eUsers;
