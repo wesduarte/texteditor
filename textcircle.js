@@ -6,13 +6,8 @@ if (Meteor.isClient) {
 // find the first document in the Documents colleciton and send back its id
   Template.editor.helpers({
     docid:function(){
-      var doc = Documents.findOne();
-      if (doc){
-        return doc._id;
-      }
-      else {
-        return undefined;
-      }
+      setUpCurrentDocument()
+      return Session.get("docid");
     },
     // template helper that configures the CodeMirror editor
     // you might also want to experiment with the ACE editor
@@ -130,6 +125,16 @@ if (Meteor.isServer) {
       console.log("Inserted");
     }
   })
+}
+
+function setUpCurrentDocument(){
+  var doc;
+  if(!Session.get("docid")){
+    doc = Documents.findOne();
+    if(doc){
+      Session.set("docid", doc._id);
+    }
+  }
 }
 
 function fixObjectKeys(obj){
