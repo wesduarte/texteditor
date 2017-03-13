@@ -53,12 +53,33 @@ if (Meteor.isClient) {
         editor.setOption("mode", "html");
         editor.on("change", function(cm_editor, info){
           $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
-          errorAddingEditingUser = Meteor.call("addEditingUser");
-
-          if(!errorAddingEditingUser){console.log(errorAddingEditingUser);}
+          Meteor.call("addEditingUser");
         });
       }
     },
+  });
+
+  Template.editingUsers.helpers({
+    users:function(){
+      var doc, eUsers, users;
+      doc = Documents.findOne();
+      if(!doc){console.log("no doc");return;}
+
+      eUsers = EditingUsers.findOne({doc_id:doc._id});
+      if(!eUsers){console.log("eUsers");return;}
+      users = [];
+      var i = 0;
+      for(var user_id in eUsers.users){
+        var user = fixObjectKeys(eUsers.users[user_id]);
+        users[i] = user;
+        i++;
+      }
+
+      console.log(users);
+
+      return users;
+
+    }
   });
 }
 
@@ -74,19 +95,24 @@ if (Meteor.isServer) {
     addEditingUser:function(){
       var doc, doc_id, user, user_id, eUsers;
       doc = Documents.findOne();
-      console.log("Reading doc")
-      user_id = Meteor.user()._id;
-      console.log("user_id = " + user_id);
-      console.log(doc);
+      console.log("Reading doc = " + doc);
       if(!doc){
         console("There is no doc");
+        return;
       }
 
       doc_id = doc._id;
 
-      if(!user_id){
+      user = Meteor.user();
+      console.log("Reading user = " + doc);
+
+
+      if(!user){
         console.log("There is no user_id");
+        return;
       }
+
+      user_id = user._id;
 
       eUsers = EditingUsers.findOne({doc_id:doc_id});
 
@@ -98,11 +124,20 @@ if (Meteor.isServer) {
         };
       }
 
-      user = Meteor.user().profile;
+      user_profile = Meteor.user().profile;
       user.lastEdit = new Date();
-      eUsers.users[user_id] = user;
+      eUsers.users[user_id] = user_profile;
       EditingUsers.upsert({_id:eUsers._id}, eUsers);
       console.log("Inserted");
     }
   })
+}
+
+function fixObjectKeys(obj){
+  var newObj = {}
+  for(key in obj){
+    var key2 = key.replace("-", "");
+    newObj[key2] = obj[key];
+  }
+  return newObj;
 }

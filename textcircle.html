@@ -11,10 +11,11 @@
 	</nav>
 	<div class="container top-margin">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
+          {{> editingUsers}}
           {{> editor}}
       </div>
-      <div class="col-md-6">
+      <div class="col-md-12">
         {{> viewer}}
       </div>
     </div>
@@ -29,4 +30,12 @@
 <template name="viewer">
   <iframe id="viewer_iframe">
   </iframe>
+</template>
+
+<template name="editingUsers">
+  <ul>
+  {{#each users}}
+    <li><p>{{firstname}}</p></li>
+  {{/each}}
+  </ul>
 </template>
