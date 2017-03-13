@@ -1,4 +1,5 @@
 this.Documents = new Mongo.Collection("documents");
+this.EditingUsers = new Mongo.Collection("editingUsers");
 
 if (Meteor.isClient) {
 
@@ -51,8 +52,10 @@ if (Meteor.isClient) {
       return function(editor){
         editor.setOption("mode", "html");
         editor.on("change", function(cm_editor, info){
-          //console.log(cm_editor.getValue());
           $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
+          errorAddingEditingUser = Meteor.call("addEditingUser");
+
+          if(!errorAddingEditingUser){console.log(errorAddingEditingUser);}
         });
       }
     },
@@ -66,4 +69,40 @@ if (Meteor.isServer) {
         Documents.insert({title:"my new document"});
     }
   });
+
+  Meteor.methods({
+    addEditingUser:function(){
+      var doc, doc_id, user, user_id, eUsers;
+      doc = Documents.findOne();
+      console.log("Reading doc")
+      user_id = Meteor.user()._id;
+      console.log("user_id = " + user_id);
+      console.log(doc);
+      if(!doc){
+        console("There is no doc");
+      }
+
+      doc_id = doc._id;
+
+      if(!user_id){
+        console.log("There is no user_id");
+      }
+
+      eUsers = EditingUsers.findOne({doc_id:doc_id});
+
+      if(!eUsers){
+        console.log("Creating new editingUsers object");
+        eUsers = {
+          doc_id: doc_id,
+          users: {},
+        };
+      }
+
+      user = Meteor.user().profile;
+      user.lastEdit = new Date();
+      eUsers.users[user_id] = user;
+      EditingUsers.upsert({_id:eUsers._id}, eUsers);
+      console.log("Inserted");
+    }
+  })
 }
