@@ -3,38 +3,6 @@ this.EditingUsers = new Mongo.Collection("editingUsers");
 
 if (Meteor.isClient) {
 
-  Accounts.ui.config({
-    extraSignupFields: [{
-        fieldName: 'first-name',
-        fieldLabel: 'First name',
-        inputType: 'text',
-        visible: true,
-        validate: function(value, errorFunction) {
-          if (!value) {
-            errorFunction("Please write your first name");
-            return false;
-          } else {
-            return true;
-          }
-        }
-      },
-      {
-        fieldName: 'last-name',
-        fieldLabel: 'Last name',
-        inputType: 'text',
-        visible: true,
-      },
-    ],
-	  requestPermissions: {
-	    facebook: ['user_likes'],
-	    github: ['user', 'repo']
-	  },
-	  requestOfflineToken: {
-	    google: true
-	  },
-	  passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
-	});
-
 // find the first document in the Documents colleciton and send back its id
   Template.editor.helpers({
     docid:function(){
@@ -51,6 +19,7 @@ if (Meteor.isClient) {
     config:function(){
       return function(editor){
         editor.setOption("mode", "html");
+        editor.setOption("theme", "cobalt");
         editor.on("change", function(cm_editor, info){
           $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
           Meteor.call("addEditingUser");

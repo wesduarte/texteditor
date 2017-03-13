@@ -13,9 +13,14 @@
     <div class="row">
       <div class="col-md-12">
           {{> editingUsers}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
           {{> editor}}
       </div>
-      <div class="col-md-12">
+      <div class="col-md-6">
         {{> viewer}}
       </div>
     </div>
@@ -33,9 +38,9 @@
 </template>
 
 <template name="editingUsers">
-  <ul>
+  Editors:
   {{#each users}}
-    <li><p>{{firstname}}</p></li>
+  <span class="label label-success">{{firstname}} </span>
+
   {{/each}}
-  </ul>
 </template>
