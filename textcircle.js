@@ -46,6 +46,12 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.docMeta.helpers({
+    document:function(){
+      return Documents.findOne({_id:Session.get("docid")});
+    }
+  });
+
   Template.navbar.helpers({
     documents:function(){
       return Documents.find();

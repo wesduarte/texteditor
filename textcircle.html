@@ -7,6 +7,12 @@
 	<div class="container top-margin">
     <div class="row">
       <div class="col-md-12">
+          {{> docMeta}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
           {{> editingUsers}}
       </div>
     </div>
@@ -57,6 +63,11 @@
 <template name="viewer">
   <iframe id="viewer_iframe">
   </iframe>
+</template>
+
+<template name="docMeta">
+  <h1>{{document.title}}</h1>
+  <br />
 </template>
 
 <template name="editingUsers">
