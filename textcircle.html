@@ -68,12 +68,13 @@
 <template name="docMeta">
   <h1>{{document.title}}</h1>
   <br />
+  {{# if canEdit }}
   <div class="checkbox">
     <label>
       <input type="checkbox" class="js-tog-private"> Private
     </label>
-
   </div>
+  {{/if}}
 </template>
 
 <template name="editingUsers">
