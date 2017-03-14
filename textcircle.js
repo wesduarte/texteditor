@@ -3,6 +3,9 @@ this.EditingUsers = new Mongo.Collection("editingUsers");
 
 if (Meteor.isClient) {
 
+  Meteor.subscribe("documents");
+  Meteor.subscribe("editingUsers");
+
 // find the first document in the Documents colleciton and send back its id
   Template.editor.helpers({
     docid:function(){
@@ -61,6 +64,8 @@ if (Meteor.isClient) {
   Template.docMeta.events({
     'click .js-tog-private':function(event){
       var doc = {_id:Session.get("docid"), isPrivate: event.target.checked };
+      console.log("Changing privacy");
+      console.log(doc);
       Meteor.call("updateDocPrivacy", doc);
     }
   });
@@ -95,6 +100,14 @@ if (Meteor.isServer) {
     }
   });
 
+  Meteor.publish("documents", function(){
+    return Documents.find({isPrivate:false});
+  });
+
+  Meteor.publish("editingUsers", function(){
+    return EditingUsers.find({});
+  });
+
   Meteor.methods({
     addDoc:function(){
       var doc;
@@ -114,10 +127,10 @@ if (Meteor.isServer) {
       return Documents.insert(doc);
     },
     updateDocPrivacy:function(doc){
-      var realDoc = Documents.findOne({_id:doc._id, owner:Meteor.user()._id});
+      var realDoc = Documents.findOne({_id:doc._id});
       if(realDoc){
         realDoc.isPrivate = doc.isPrivate;
-        Documents.update({_id:realDoc._id});
+        Documents.update({_id:realDoc._id}, realDoc);
       }
     },
     addEditingUser:function(){
