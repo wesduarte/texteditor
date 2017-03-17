@@ -1,7 +1,13 @@
 <template name="docList">
   <div class="container top-margin">
-    {{#each documents}}
-      {{title}}
-    {{/each}}
+    <div class="row">
+      <ul list-group>
+      {{#each documents}}
+        <div class="col-md-3 col-xs-6">
+          <li class="list-group-item"><a href="/documents/{{_id}}">{{title}}</a></li>
+        </div>
+      {{/each}}
+      </ul>
+    </div>
   </div>
 </template>
