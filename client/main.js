@@ -1,5 +1,6 @@
 import '/imports/api/documents.js';
 import '/imports/api/editingusers.js';
+import '/imports/startup/accounts.js';
 import '/shared/methods.js';
 
 Meteor.subscribe("documents");
@@ -19,16 +20,16 @@ Template.editor.helpers({
       editor.setOption("theme", "cobalt");
       editor.on("change", function(cm_editor, info){
         $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
-        Meteor.call("addEditingUser");
+        Meteor.call("addEditingUser", Session.get("docid"));
       });
     }
   },
 });
 
 Template.editingUsers.helpers({
-  users:function(){
+  users:function(docid){
     var doc, eUsers, users;
-    doc = Documents.findOne();
+    doc = Documents.findOne({_id:Session.get("docid")});
     if(!doc){console.log("no doc");return;}
 
     eUsers = EditingUsers.findOne({doc_id:doc._id});

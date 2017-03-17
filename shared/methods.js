@@ -23,9 +23,9 @@ Meteor.methods({
       Documents.update({_id:realDoc._id}, realDoc);
     }
   },
-  addEditingUser:function(){
+  addEditingUser:function(docid){
     var doc, doc_id, user, user_id, eUsers;
-    doc = Documents.findOne();
+    doc = Documents.findOne({_id:docid});
     console.log("Reading doc = " + doc);
     if(!doc){
       console("There is no doc");
