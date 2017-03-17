@@ -6,6 +6,20 @@ import '/shared/methods.js';
 Meteor.subscribe("documents");
 Meteor.subscribe("editingUsers");
 
+Router.configure({
+  layoutTemplate:"ApplicationLayout"
+});
+
+Router.route('/', function () {
+  this.render("navbar", {to:"header"});
+  this.render("docList", {to:"main"});
+});
+
+Router.route('/documents/:_id', function () {
+  this.render("navbar", {to:"header"});
+  this.render("docItem", {to:"main"});
+});
+
 // find the first document in the Documents colleciton and send back its id
 Template.editor.helpers({
   docid:function(){
