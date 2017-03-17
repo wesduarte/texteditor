@@ -70,6 +70,12 @@ Template.navbar.helpers({
   }
 });
 
+Template.docList.helpers({
+  documents:function(){
+    return Documents.find();
+  }
+});
+
 Template.docMeta.events({
   'click .js-tog-private':function(event){
     var doc = {_id:Session.get("docid"), isPrivate: event.target.checked };
