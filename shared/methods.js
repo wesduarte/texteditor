@@ -1,4 +1,12 @@
 Meteor.methods({
+  addComment:function(comment){
+    if(this.userId){
+      comment.createdOn = new Date();
+      comment.userId = this.userId;
+      return Comments.insert(comment);
+    }
+    return;
+  },
   addDoc:function(){
     var doc;
 
@@ -33,18 +41,14 @@ Meteor.methods({
     }
 
     doc_id = doc._id;
-
     user = Meteor.user();
     console.log("Reading user = " + doc);
 
-
-    if(!user){
+    if(!this.userId){
       console.log("There is no user_id");
       return;
     }
-
     user_id = user._id;
-
     eUsers = EditingUsers.findOne({doc_id:doc_id});
 
     if(!eUsers){

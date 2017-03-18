@@ -20,6 +20,7 @@
         {{> viewer}}
       </div>
     </div>
+    {{> insertCommentForm}}
 	</div>
 </template>
 
@@ -51,4 +52,9 @@
   <span class="label label-success">{{firstname}} </span>
 
   {{/each}}
+</template>
+
+<template name="insertCommentForm">
+  {{> quickForm collection=comments id="insertCommentForm" type="method"
+    meteormethod="addComment"}}
 </template>

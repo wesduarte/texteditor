@@ -1,10 +1,12 @@
 import '/imports/api/documents.js';
 import '/imports/api/editingusers.js';
+import '/imports/api/comments.js';
 import '/imports/startup/accounts.js';
 import '/shared/methods.js';
 
 Meteor.subscribe("documents");
 Meteor.subscribe("editingUsers");
+Meteor.subscribe("comments");
 
 Router.configure({
   layoutTemplate:"ApplicationLayout"
@@ -60,6 +62,12 @@ Template.editingUsers.helpers({
 
     return users;
 
+  }
+});
+
+Template.insertCommentForm.helpers({
+  comments() {
+    return Comments;
   }
 });
 

@@ -1,5 +1,6 @@
 import '/imports/api/documents.js';
 import '/imports/api/editingusers.js';
+import '/imports/api/comments.js';
 import '/shared/methods.js';
 
 Meteor.startup(function () {
@@ -20,4 +21,8 @@ Meteor.publish("documents", function(){
 
 Meteor.publish("editingUsers", function(){
   return EditingUsers.find({});
+});
+
+Meteor.publish("comments", function(){
+  return Comments.find({});
 });
