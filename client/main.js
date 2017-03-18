@@ -68,6 +68,10 @@ Template.editingUsers.helpers({
 Template.insertCommentForm.helpers({
   comments() {
     return Comments;
+  },
+  docid:function(){
+    setUpCurrentDocument()
+    return Session.get("docid");
   }
 });
 
