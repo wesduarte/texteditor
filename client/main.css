@@ -9,3 +9,13 @@
 	resize:both;
 	width:100%;
 }
+
+.username {
+	color: #128ee9;
+}
+
+.date {
+	color: #616161;
+	font-size: 10px;
+	font-style: italic;
+}

@@ -22,14 +22,11 @@ Router.route('/documents/:_id', function () {
   this.render("docItem", {to:"main"});
 });
 
-// find the first document in the Documents colleciton and send back its id
 Template.editor.helpers({
   docid:function(){
     setUpCurrentDocument()
     return Session.get("docid");
   },
-  // template helper that configures the CodeMirror editor
-  // you might also want to experiment with the ACE editor
   config:function(){
     return function(editor){
       editor.setOption("mode", "html");
@@ -46,8 +43,7 @@ Template.editingUsers.helpers({
   users:function(docid){
     var doc, eUsers, users;
     doc = Documents.findOne({_id:Session.get("docid")});
-    if(!doc){console.log("no doc");return;}
-
+    if(!doc){return;}
     eUsers = EditingUsers.findOne({doc_id:doc._id});
     if(!eUsers){console.log("eUsers");return;}
     users = [];
@@ -57,21 +53,28 @@ Template.editingUsers.helpers({
       users[i] = user;
       i++;
     }
-
     console.log(users);
 
     return users;
-
   }
 });
 
 Template.insertCommentForm.helpers({
-  comments() {
-    return Comments;
-  },
   docid:function(){
     setUpCurrentDocument()
     return Session.get("docid");
+  },
+  userid:function(){
+    if(Meteor.user())
+      return Meteor.user()._id;
+    return;
+  }
+});
+
+Template.commentList.helpers({
+  comments:function() {
+    return Comments.find({});
+    //return Comments.find({docid:Session.get("docid")});
   }
 });
 
